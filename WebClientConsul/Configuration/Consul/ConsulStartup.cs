@@ -21,6 +21,7 @@ namespace WebClientConsul.Configuration.Consul
             var consulConfig = services.BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Options.IOptions<ConsulOptions>>().Value;
 
             services.AddSingleton(consulConfig);
+            services.AddHealthChecks();
             services.AddSingleton<IConsulClient>(c => new ConsulClient(cfg =>
            {
                if (!string.IsNullOrEmpty(consulConfig.Host))
@@ -40,7 +41,7 @@ namespace WebClientConsul.Configuration.Consul
             if (!consulOptions.Enabled)
                 return app;
 
-            var serviceId = Guid.NewGuid();
+            var serviceId = !string.IsNullOrEmpty(consulOptions.Id) ? consulOptions.Id : Guid.NewGuid().ToString();
             var consulServiceId = $"{consulOptions.Service}:{serviceId}";
 
             var client = scope.ServiceProvider.GetRequiredService<IConsulClient>();
@@ -51,6 +52,8 @@ namespace WebClientConsul.Configuration.Consul
                 ID = consulServiceId,
                 Address = consulOptions.Address,
                 Port = consulOptions.Port,
+                Tags = consulOptions.Tags,
+                Meta = consulOptions.MetaData
             };
 
             if (consulOptions.PingEnabled)
