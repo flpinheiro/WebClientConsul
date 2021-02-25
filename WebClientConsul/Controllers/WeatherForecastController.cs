@@ -22,12 +22,12 @@ namespace WebClientConsul.Controllers
         {
             _logger = logger;
         }
-
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet("{Count}")]
+        public IEnumerable<WeatherForecast> Get(int count = 5)
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            return Enumerable.Range(1, count).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = rng.Next(-20, 55),

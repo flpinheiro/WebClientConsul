@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  webclientconsul:
+    image: ${DOCKER_REGISTRY-}webclientconsul
+    build:
+      context: .
+      dockerfile: WebClientConsul/Dockerfile
+    container_name: webclientconsul
+    ports:
+      - 5056:80

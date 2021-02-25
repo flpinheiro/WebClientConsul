@@ -71,7 +71,7 @@ namespace WebClientConsul.Configuration.Consul
                     var check = new AgentServiceCheck
                     {
                         Interval = TimeSpan.FromSeconds(5),
-                        DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(10),
+                        //DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(10),
                         HTTP = $"{scheme}{consulOptions.Address}{(consulOptions.Port > 0 ? consulOptions.Port : string.Empty)}/health"
                     };
 
