@@ -7,5 +7,8 @@ services:
       context: .
       dockerfile: WebClientConsul/Dockerfile
     container_name: webclientconsul
-    ports:
-      - 5056:80
+    networks:
+      - default_network    
+networks:
+  default_network:
+    external: true      

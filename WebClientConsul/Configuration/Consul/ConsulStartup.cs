@@ -66,16 +66,26 @@ namespace WebClientConsul.Configuration.Consul
                     var scheme =
                         consulOptions.Address.StartsWith("http", StringComparison.InvariantCultureIgnoreCase)
                         ? string.Empty
-                        : "http://";
+                        : "https://";
+                    
+                    var test = $"{scheme}{consulOptions.Address}:{(consulOptions.Port > 0 ? consulOptions.Port : string.Empty)}/health";
 
-                    var check = new AgentServiceCheck
+                    var checkHTTP = new AgentServiceCheck
                     {
+                        
                         Interval = TimeSpan.FromSeconds(5),
-                        //DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(10),
+                        DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(10),
                         HTTP = $"{scheme}{consulOptions.Address}{(consulOptions.Port > 0 ? consulOptions.Port : string.Empty)}/health"
                     };
 
-                    consulServiceRegistration.Checks = new[] { check };
+                    var checkFTP = new AgentServiceCheck 
+                    {
+                        Interval = TimeSpan.FromSeconds(5),
+                        DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(10),
+                        TCP = "localhost:5001"
+                    };
+
+                    consulServiceRegistration.Checks = new[] {  checkFTP };
                 }
                 else
                 {

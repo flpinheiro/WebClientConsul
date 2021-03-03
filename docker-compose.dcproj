@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>ec2847d0-2f91-423e-9da7-6983bd20ebbb</ProjectGuid>
+    <ProjectGuid>2a4049bf-f49a-4847-bc0b-2a776cc1c4e3</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/weatherforecast</DockerServiceUrl>
     <DockerServiceName>webclientconsul</DockerServiceName>
