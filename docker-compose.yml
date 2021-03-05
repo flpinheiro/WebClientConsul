@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   webclientconsul:
-    image: ${DOCKER_REGISTRY-}webclientconsul
+    image: 10.0.18.30:8082/compuletra.webclient:latest
     build:
       context: .
       dockerfile: WebClientConsul/Dockerfile
