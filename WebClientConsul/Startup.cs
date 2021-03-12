@@ -9,12 +9,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using WebClientConsul.Configuration;
 using WebClientConsul.Configuration.Consul;
 
 namespace WebClientConsul
@@ -31,9 +33,13 @@ namespace WebClientConsul
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            //services.AddConsulConfig(Configuration);
-            services.AddConsul(Configuration);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Weather API", Version = "v1" });
+                c.SwaggerGeneratorOptions = new Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorOptions { };
+            })
+            .AddSwaggerGenNewtonsoftSupport();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,19 +49,19 @@ namespace WebClientConsul
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseRouting();
-            app.UseConsul();
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapHealthChecks("/health", GetHealthCheckOptions());
-                endpoints.MapControllers();
-            });
+            app.UseSwagger()
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Weather V1");
+                });
         }
 
         private HealthCheckOptions GetHealthCheckOptions() =>
