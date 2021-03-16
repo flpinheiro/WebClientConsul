@@ -15,9 +15,10 @@ namespace WebClientConsul.Configuration
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            });
-            
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Weather API", Version = "v1" });
+                c.SwaggerGeneratorOptions = new Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorOptions { };
+            }).AddSwaggerGenNewtonsoftSupport();
+
             return services;
         }
 
@@ -30,7 +31,7 @@ namespace WebClientConsul.Configuration
             app.UseSwaggerUI(c =>
             {
                 c.RoutePrefix = "swagger";
-                c.SwaggerEndpoint("v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("v1/swagger.json", "Weather V1");
             });
             return app;
         }
