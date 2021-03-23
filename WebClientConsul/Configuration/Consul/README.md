@@ -3,13 +3,21 @@
 ```
 
 ```json
-"Consul": {
+  "Consul": {
+    "Id": "WebClientConsulId", //optional
     "Host": "http://localhost:8500",
     "Enabled": true,
-    "service": "mainservice",
+    "service": "WebClientConsul",
     "address": "localhost",
     "Port": 8082,
-    "PingEnabled": false
+    "PingEnabled": true,
+    "Tags": [ "consul", "client", "web" ],
+    "MetaData": {
+      "type": "MyJsonDictionaryOfstringanyType:#Json_Dictionary_Test",
+      "Street": "30 Rockefeller Plaza",
+      "City": "New York City",
+      "State": "NY"
+    }
   },
   "ConsulConfig": {
     "Host": "http://localhost:8500",
