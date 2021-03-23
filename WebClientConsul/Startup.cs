@@ -7,12 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net.Mime;
 using WebClientConsul.Configuration;
+using WebClientConsul.Configuration.Consul;
 
 namespace WebClientConsul
 {
@@ -29,11 +29,12 @@ namespace WebClientConsul
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSwaggerModule();
+            services.AddConsul(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-           
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -47,7 +48,13 @@ namespace WebClientConsul
 
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => 
+            { 
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });
+            app.UseHealthChecks("/health", GetHealthCheckOptions());
+            app.UseConsul();
         }
 
         private HealthCheckOptions GetHealthCheckOptions() =>

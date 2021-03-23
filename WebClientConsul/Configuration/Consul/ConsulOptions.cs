@@ -13,6 +13,6 @@ namespace WebClientConsul.Configuration.Consul
         public int Port { get; set; }
         public bool PingEnabled { get; set; }
         public string[] Tags { get; set; }
-        public IDictionary<string, string> MetaData { get;  set; }
+        public IDictionary<string, string> MetaData { get; set; }
     }
 }

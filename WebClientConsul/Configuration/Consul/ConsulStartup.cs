@@ -67,25 +67,33 @@ namespace WebClientConsul.Configuration.Consul
                         consulOptions.Address.StartsWith("http", StringComparison.InvariantCultureIgnoreCase)
                         ? string.Empty
                         : "https://";
-                    
+
                     var test = $"{scheme}{consulOptions.Address}:{(consulOptions.Port > 0 ? consulOptions.Port : string.Empty)}/health";
 
                     var checkHTTP = new AgentServiceCheck
                     {
-                        
+
                         Interval = TimeSpan.FromSeconds(5),
                         DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(10),
-                        HTTP = $"{scheme}{consulOptions.Address}{(consulOptions.Port > 0 ? consulOptions.Port : string.Empty)}/health"
+                        HTTP = test,
+                        TCP = "localhost:5001",
                     };
 
-                    var checkFTP = new AgentServiceCheck 
+                    var checkTCP = new AgentServiceCheck
                     {
                         Interval = TimeSpan.FromSeconds(5),
                         DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(10),
                         TCP = "localhost:5001"
                     };
+                    var check = new AgentCheckRegistration()
+                    {
+                        HTTP = test,
+                        Notes = "Checks /health/status on localhost",
+                        Timeout = TimeSpan.FromSeconds(3),
+                        Interval = TimeSpan.FromSeconds(10)
+                    };
 
-                    consulServiceRegistration.Checks = new[] {  checkFTP };
+                    consulServiceRegistration.Checks = new[] { checkTCP, checkHTTP, check };
                 }
                 else
                 {
@@ -93,9 +101,10 @@ namespace WebClientConsul.Configuration.Consul
                 }
 
             }
+            client.Agent.ServiceDeregister(consulServiceRegistration.ID).Wait();
             client.Agent.ServiceRegister(consulServiceRegistration);
 
-            lifetime.ApplicationStopping.Register(() => client.Agent.ServiceDeregister(consulServiceRegistration.ID).ConfigureAwait(true));
+            lifetime.ApplicationStopping.Register( () =>  client.Agent.ServiceDeregister(consulServiceRegistration.ID).Wait());
 
             return app;
         }
