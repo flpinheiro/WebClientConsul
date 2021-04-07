@@ -4,10 +4,10 @@ services:
   webclientconsul:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_URLS=http://+:80 #https://+:443;
     ports:
-      - "0.0.0.0:5000:80"
-      - "0.0.0.0:5001:443"
+      - "5059:80"
+      #- "0.0.0.0:5001:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
