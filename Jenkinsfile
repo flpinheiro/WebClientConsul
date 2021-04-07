@@ -46,7 +46,7 @@ pipeline{
 
         stage("Docker Build"){
             steps{
-                sh 'docker build -f ./WebClientConsul/Dockerfile -t 10.0.18.30:8082/compuletra.webclient:$BUILD_NUMBER .'
+                //sh 'docker build -f ./WebClientConsul/Dockerfile -t 10.0.18.30:8082/compuletra.webclient:$BUILD_NUMBER .'
                 sh 'docker build -f ./WebClientConsul/Dockerfile -t 10.0.18.30:8082/compuletra.webclient:latest .'
             }
             post{
@@ -59,21 +59,21 @@ pipeline{
             } 
         }
 
-        stage("Docker Push"){
-            steps{
-                sh 'docker login -u jenkins -p jenkins 10.0.18.30:8082/docker-hosted'
-                sh 'docker push 10.0.18.30:8082/compuletra.webclient:$BUILD_NUMBER'
-                sh 'docker push 10.0.18.30:8082/compuletra.webclient:latest'
-            }
-            post{
-                success{
-                    echo "======== docker Push successfully ========"
-                }
-                failure{
-                    echo "======== docker Push failed ========"
-                }
-            }             
-        }
+        // stage("Docker Push"){
+        //     steps{
+        //         sh 'docker login -u jenkins -p jenkins 10.0.18.30:8082/docker-hosted'
+        //         sh 'docker push 10.0.18.30:8082/compuletra.webclient:$BUILD_NUMBER'
+        //         sh 'docker push 10.0.18.30:8082/compuletra.webclient:latest'
+        //     }
+        //     post{
+        //         success{
+        //             echo "======== docker Push successfully ========"
+        //         }
+        //         failure{
+        //             echo "======== docker Push failed ========"
+        //         }
+        //     }             
+        // }
 
         stage("Docker Compose"){
             steps{
@@ -89,21 +89,21 @@ pipeline{
             }              
         }
 
-        stage("Docker Clean"){
-            steps{
-                sh 'docker image prune -f'
-                sh 'docker container prune -f'
-                sh 'docker volume prune -f'
-            }
-            post{
-                success{
-                    echo "======== docker Clean successfully ========"
-                }
-                failure{
-                    echo "======== docker Clean failed ========"
-                }
-            }             
-        }        
+        // stage("Docker Clean"){
+        //     steps{
+        //         sh 'docker image prune -f'
+        //         sh 'docker container prune -f'
+        //         sh 'docker volume prune -f'
+        //     }
+        //     post{
+        //         success{
+        //             echo "======== docker Clean successfully ========"
+        //         }
+        //         failure{
+        //             echo "======== docker Clean failed ========"
+        //         }
+        //     }             
+        // }        
     }
     post{
         success{

@@ -101,7 +101,7 @@ namespace WebClientConsul.Configuration.Consul
                 }
 
             }
-            client.Agent.ServiceDeregister(consulServiceRegistration.ID).Wait();
+            //client.Agent.ServiceDeregister(consulServiceRegistration.ID).Wait();
             client.Agent.ServiceRegister(consulServiceRegistration);
 
             lifetime.ApplicationStopping.Register( () =>  client.Agent.ServiceDeregister(consulServiceRegistration.ID).Wait());
