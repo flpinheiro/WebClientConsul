@@ -2,47 +2,47 @@ pipeline{
     agent any
 
     stages{
-        stage('Clean'){
-            steps{
-                sh 'dotnet clean -c Release'
-            }
-            post{
-                success{
-                    echo "======== dotnet clean successfully ========"
-                }
-                failure{
-                    echo "======== dotnet clean failed ========"
-                }
-            }
-        }
+        // stage('Clean'){
+        //     steps{
+        //         sh 'dotnet clean -c Release'
+        //     }
+        //     post{
+        //         success{
+        //             echo "======== dotnet clean successfully ========"
+        //         }
+        //         failure{
+        //             echo "======== dotnet clean failed ========"
+        //         }
+        //     }
+        // }
 
-        stage('Restore'){
-            steps{
-                sh 'dotnet restore'
-            }
-            post{
-                success{
-                    echo "======== dotnet restore successfully ========"
-                }
-                failure{
-                    echo "======== dotnet restore failed ========"
-                }
-            }            
-        }
+        // stage('Restore'){
+        //     steps{
+        //         sh 'dotnet restore'
+        //     }
+        //     post{
+        //         success{
+        //             echo "======== dotnet restore successfully ========"
+        //         }
+        //         failure{
+        //             echo "======== dotnet restore failed ========"
+        //         }
+        //     }            
+        // }
 
-        stage('Test'){
-            steps{
-                sh 'dotnet test --no-restore --verbosity normal'
-            }
-            post{
-                success{
-                    echo "======== dotnet test successfully ========"
-                }
-                failure{
-                    echo "======== dotnet test failed ========"
-                }
-            }            
-        }
+        // stage('Test'){
+        //     steps{
+        //         sh 'dotnet test --no-restore --verbosity normal'
+        //     }
+        //     post{
+        //         success{
+        //             echo "======== dotnet test successfully ========"
+        //         }
+        //         failure{
+        //             echo "======== dotnet test failed ========"
+        //         }
+        //     }            
+        // }
 
         stage("Docker Build"){
             steps{
