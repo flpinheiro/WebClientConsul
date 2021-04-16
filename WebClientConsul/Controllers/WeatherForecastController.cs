@@ -33,5 +33,16 @@ namespace WebClientConsul.Controllers
             })
             .ToArray();
         }
+
+        /// <summary>
+        /// Return docker id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("docker")]
+        public string GetMachineName()
+        {
+            return  System.Environment.MachineName;
+        }
+
     }
 }
