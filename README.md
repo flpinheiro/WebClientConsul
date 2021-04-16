@@ -270,3 +270,11 @@ docker-compose -f ./docker/consul.yml -d up
 caso por algum motivo não funcione instale o consul seguinto o tutorial da Hashcorp [Getting Started](https://learn.hashicorp.com/collections/consul/getting-started)
 
 por fim execute a aplicação e veja o cliente se registrando em [http://localhost:8500/ui](http://localhost:8500/ui)
+
+## Docker network 
+
+É necessário criar uma network externa para que o docker-compose funcione corretamente, segue abaixo o comando mmínimo.
+
+```
+docker network create -d bridge compuletra
+```
