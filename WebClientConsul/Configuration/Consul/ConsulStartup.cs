@@ -45,12 +45,10 @@ namespace WebClientConsul.Configuration.Consul
             if (string.IsNullOrEmpty(consulOptions.Address))
                 throw new ConsulConfigurationException("Service deve ter um Address");
 
-            var consulServiceId = $"{consulOptions.Service}:{consulOptions.Id}";
-
             var consulServiceRegistration = new AgentServiceRegistration
             {
+                ID = consulOptions.Id,
                 Name = consulOptions.Service,
-                ID = consulServiceId,
                 Address = consulOptions.Address,
                 Port = consulOptions.Port,
                 Tags = consulOptions.Tags,
@@ -63,48 +61,24 @@ namespace WebClientConsul.Configuration.Consul
 
                 if (healthService != null)
                 {
-                    var scheme =
-                        consulOptions.Address.StartsWith("http", StringComparison.InvariantCultureIgnoreCase)
-                        ? string.Empty
-                        : "https://";
-
-                    var test = $"{scheme}{consulOptions.Address}:{(consulOptions.Port > 0 ? consulOptions.Port : string.Empty)}/health";
-
-                    var checkHTTP = new AgentServiceCheck
-                    {
-
-                        Interval = TimeSpan.FromSeconds(5),
-                        DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(10),
-                        HTTP = test,
-                        TCP = "localhost:5001",
-                    };
-
-                    var checkTCP = new AgentServiceCheck
-                    {
-                        Interval = TimeSpan.FromSeconds(5),
-                        DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(10),
-                        TCP = "localhost:5001"
-                    };
                     var check = new AgentCheckRegistration()
                     {
-                        HTTP = test,
+                        HTTP = $"http://{consulOptions.Address}/health",
                         Notes = "Checks /health/status on localhost",
                         Timeout = TimeSpan.FromSeconds(3),
-                        Interval = TimeSpan.FromSeconds(10)
+                        Interval = TimeSpan.FromSeconds(10),
+                        DockerContainerID = System.Environment.MachineName
                     };
 
-                    consulServiceRegistration.Checks = new[] { checkTCP, checkHTTP, check };
+                    consulServiceRegistration.Checks = new[] { check };
                 }
                 else
                 {
                     throw new ConsulConfigurationException("Verifique os parametros de configuração do consul");
                 }
-
             }
-            //client.Agent.ServiceDeregister(consulServiceRegistration.ID).Wait();
             client.Agent.ServiceRegister(consulServiceRegistration);
-
-            lifetime.ApplicationStopping.Register( () =>  client.Agent.ServiceDeregister(consulServiceRegistration.ID).Wait());
+            lifetime.ApplicationStopping.Register(() => client.Agent.ServiceDeregister(consulServiceRegistration.ID).Wait());
 
             return app;
         }
