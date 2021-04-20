@@ -5,9 +5,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80 #https://+:443;
-    ports:
-      - "5059:80"
-      #- "0.0.0.0:5001:443"
+    # ports:
+    #   - "5059:80"
+    #   - "5001:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    scale: 5
+    restart: always

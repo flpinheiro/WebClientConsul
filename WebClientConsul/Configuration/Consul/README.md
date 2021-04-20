@@ -1,28 +1,23 @@
-﻿```xml
+﻿# README
+
+```xml
 <PackageReference Include="Consul" Version="1.6.1.1" />
 ```
 
 ```json
-  "Consul": {
-    "Id": "WebClientConsulId", //optional
-    "Host": "http://localhost:8500",
+   "Consul": {
+    "Host": "http://consul:8500/",
     "Enabled": true,
-    "service": "WebClientConsul",
-    "address": "localhost",
-    "Port": 8082,
+    "Service": "WebClientConsul",
+    "address": "webclientconsul",
+    "Port": 80,
     "PingEnabled": true,
     "Tags": [ "consul", "client", "web" ],
     "MetaData": {
-      "type": "MyJsonDictionaryOfstringanyType:#Json_Dictionary_Test",
-      "Street": "30 Rockefeller Plaza",
-      "City": "New York City",
-      "State": "NY"
+            "type": "client",
+            "Company": "Compuletra",
+            "Enviroment": "Development"
     }
-  },
-  "ConsulConfig": {
-    "Host": "http://localhost:8500",
-    "ServiceName": "catalogService",
-    "ServiceId": "catalogService-Id"
   }
 ```
 

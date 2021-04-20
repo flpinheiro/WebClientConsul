@@ -5,7 +5,7 @@ namespace WebClientConsul.Configuration.Consul
 {
     public class ConsulOptions
     {
-        public string Id { get; init; } = Guid.NewGuid().ToString();
+        public string Id { get; } = Guid.NewGuid().ToString();
         public bool Enabled { get; init; }
         public string Host { get; init; } = "http://localhost:8500/";
         public string Service { get; init; }

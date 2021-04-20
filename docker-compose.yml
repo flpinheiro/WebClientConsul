@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: WebClientConsul/Dockerfile
-    container_name: webclientconsul
+    # container_name: webclientconsul
 
 
 networks:
